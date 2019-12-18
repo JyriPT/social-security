@@ -85,9 +85,31 @@ namespace Number
                         if (int.TryParse(numberstring, out int number) == true)
                         {
                             #endregion
+                            //Tarkistetaan ensimmäisen 6 luvun oikeellisuus
                             if (dateCheck(day, month, year) == true)
                             {
-
+                                //Tarkistetaan vuosisata merkinnän oikeellisuus
+                                if (centurystring == "-" || centurystring == "+" || centurystring == "A")
+                                {
+                                    //Tarkistetaan satunnaisluvun oikeellisuus
+                                    if (number >= 2 && number <= 899)
+                                    {
+                                        //Tarkistetaan tarkistusmerkin oikeellisuus
+                                        if (confirmCheck(input, confirms) == true)
+                                        {
+                                            result = true;
+                                        } else
+                                        {
+                                            return result;
+                                        }
+                                    } else
+                                    {
+                                        return result;
+                                    }
+                                } else
+                                {
+                                    return result;
+                                }
                             } else
                             {
                                 return result;
@@ -114,7 +136,6 @@ namespace Number
             }
             #endregion
 
-            result = true;
             return result;
         }
 
@@ -154,6 +175,18 @@ namespace Number
             {
                 result = true;
             }
+
+            return result;
+        }
+
+        static bool confirmCheck(string input, string test)
+        {
+            //Alustetaan arvot tarkistusta varten
+            bool result = false;
+            int math = int.Parse(input.Substring(0, 6));
+            double mathresult = ((double.Parse(input) / 31) - (math / 31)) * 31;
+            //Tarkistetaan
+            
 
             return result;
         }
