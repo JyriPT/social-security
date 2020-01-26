@@ -26,13 +26,17 @@ namespace Number
                     string number = Console.ReadLine().Trim();
 
                     //Tarkistetaan pituus heti alkuun
-                    do
+                    if (number.Length != 11)
                     {
-                        Console.WriteLine("Invalid input, must be 11 characters long.");
-                        Console.WriteLine("Please input number to be checked: ");
-                        number = Console.ReadLine();
+                        do
+                        {
+                            Console.WriteLine("Invalid input, must be 11 characters long.");
+                            Console.WriteLine("Please input number to be checked: ");
+                            number = Console.ReadLine();
 
-                    } while (number.Length != 11);
+                        } while (number.Length != 11);
+                    }
+                    
 
                     //Tarkistetaan numeron oikeellisuus
                     bool result = numberCheck(number);
@@ -181,12 +185,31 @@ namespace Number
 
         static bool confirmCheck(string input, string test)
         {
+            //Alustetaan taulukko arvon tarkistamista varten
+            char[] alphabet = "ABCDEFHJKLMNPRSTUVWXY".ToCharArray();
+            string[] values = new string[31];
+            for (int i = 0; i < 31; i++)
+            {
+                if (i < 10)
+                {
+                    values[i] = i.ToString();
+                } else
+                {
+                    values[i] = alphabet[i - 10].ToString();
+                }
+            }
             //Alustetaan arvot tarkistusta varten
+            input = input.Remove(6, 1);
+            input = input.Remove(9, 1);
             bool result = false;
-            int math = int.Parse(input.Substring(0, 6));
-            double mathresult = ((double.Parse(input) / 31) - (math / 31)) * 31;
+            int math = int.Parse(input);
+            Math.DivRem(math, 31, out int mathresult);
+
             //Tarkistetaan
-            
+            if (values[Convert.ToInt32(mathresult)] == test)
+            {
+                result = true;
+            }
 
             return result;
         }
