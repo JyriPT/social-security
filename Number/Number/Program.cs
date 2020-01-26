@@ -54,7 +54,33 @@ namespace Number
                 }
                 else if (select == 2)
                 {
-                    
+                    //Pydetään numero tarkistettavaksi
+                    Console.WriteLine("Please input number to be completed: ");
+                    string number = Console.ReadLine().Trim();
+
+                    //Tarkistetaan pituus heti alkuun
+                    if (number.Length != 10)
+                    {
+                        do
+                        {
+                            Console.WriteLine("Invalid input, must be 10 characters long.");
+                            Console.WriteLine("Please input number to be checked: ");
+                            number = Console.ReadLine();
+
+                        } while (number.Length != 10);
+                    }
+
+                    //Tarkistetaan onko koko luku oikein generoidun osan kanssa
+                    string fullnum = generateCode(number);
+                    bool result = numberCheck(fullnum);
+
+                    if (result == true)
+                    {
+                        Console.WriteLine($"Full code: {fullnum}");
+                    } else if (result == false)
+                    {
+                        Console.WriteLine("Given input was not valid. Please reboot and try again.");
+                    }
                 }
                 else
                 {
@@ -67,7 +93,7 @@ namespace Number
             }
 
         }
-
+        //Numeron tarkistus. Valtava if-rakenne, tekee paljon viittauksia muuhun koodiin.
         static bool numberCheck (string input)
         {
             bool result = false;
@@ -182,7 +208,7 @@ namespace Number
 
             return result;
         }
-
+        //Tarkistaa, onko tunnuksen tarkistusluku oikein
         static bool confirmCheck(string input, string test)
         {
             //Alustetaan taulukko arvon tarkistamista varten
@@ -212,6 +238,31 @@ namespace Number
             }
 
             return result;
+        }
+        //Generoi tarkistustunnuksen annetulle vajaalle koodille
+        static string generateCode(string input)
+        {
+            //Alustetaan taulukko
+            char[] alphabet = "ABCDEFHJKLMNPRSTUVWXY".ToCharArray();
+            string[] values = new string[31];
+            for (int i = 0; i < 31; i++)
+            {
+                if (i < 10)
+                {
+                    values[i] = i.ToString();
+                }
+                else
+                {
+                    values[i] = alphabet[i - 10].ToString();
+                }
+            }
+            string process = input.Remove(6, 1);
+            int math = int.Parse(process);
+            Math.DivRem(math, 31, out int mathresult);
+
+            string output = input + values[mathresult];
+
+            return output;
         }
     }
 }
